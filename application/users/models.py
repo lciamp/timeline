@@ -72,7 +72,16 @@ class User(db.Model):
     	followed = self.followed.filter(followers.c.user_id == user.id)
     	return followed > 0
 
-    
+    def newsfeed(self):
+    	"""
+    	return all posts from users followed by the current user,
+    	in decending cronological order
+    	"""
+    	join_condition = followers.c.user_id == Post.user_id
+    	filter_condition = followers.c.follower_id == self.id
+    	ordering = Post.created_on.desc()
+
+    	return Post.query.join(followers, (join_condition)).filter(filter_condition).order_by(ordering)
 
 
 
