@@ -1,0 +1,4 @@
+{
+  "tests/test_user_model.py::test_user_relationship": true, 
+  "tests/test_user_model.py::test_user_relationships": true
+}
