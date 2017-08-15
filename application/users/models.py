@@ -1,5 +1,5 @@
 import datetime
-from application import db, flask_bcrypt
+from application import db, flask_bcrypt, user_followed
 from sqlalchemy.ext.hybrid import hybrid_property
 from ..posts.models import Post
 
@@ -73,6 +73,10 @@ class User(db.Model):
 			return False
 
 		self.followed.append(user)
+
+		# send signal
+		user_followed.send(self)
+
 		return self
 
 	def is_following(self, user):
@@ -89,33 +93,6 @@ class User(db.Model):
 		ordering = Post.created_on.desc()
 
 		return Post.query.join(followers, (join_condition)).filter(filter_condition).order_by(ordering)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
